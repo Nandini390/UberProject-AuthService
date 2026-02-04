@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.function.Function;
@@ -24,7 +25,7 @@ public class JWTService implements CommandLineRunner {
     private String SECRET;
 
     //This method creates a brand-new JWT token for us based on a payload
-    private String createToken(Map<String,Object>payload, String username) {
+    public String createToken(Map<String,Object>payload, String username) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime()+expiry*1000L);
 
@@ -37,11 +38,15 @@ public class JWTService implements CommandLineRunner {
                 .compact();
     }
 
-    private Key getSignKey(){
+    public String createToken(String email){
+        return createToken(new HashMap<>(),email);
+    }
+
+    public Key getSignKey(){
         return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
     }
 
-    private Claims extractAllPayloads(String token){
+    public Claims extractAllPayloads(String token){
         return Jwts
                 .parser()
                 .setSigningKey(getSignKey())
@@ -55,36 +60,36 @@ public class JWTService implements CommandLineRunner {
         return claimsResolver.apply(claims);
     }
 
-    private Date extractExpiration(String token){
+    public Date extractExpiration(String token){
        return extractClaim(token, Claims::getExpiration);
     }
 
-    private String extractEmail(String token){
+    public String extractEmail(String token){
         return extractClaim(token,Claims::getSubject);
     }
 
-    private boolean isTokenExpired(String token){
+    public boolean isTokenExpired(String token){
          return extractExpiration(token).before(new Date());
     }
 
-    private String extractPhoneNumber(String token){
+    public String extractPhoneNumber(String token){
         Claims claims=extractAllPayloads(token);
         String number=(String) claims.get("phoneNumber");
         return number;
     }
 
-    private String extractEmailFromClaim(String token){
+    public String extractEmailFromClaim(String token){
         Claims claims=extractAllPayloads(token);
         String email=(String) claims.get("email");
         return email;
     }
 
-    private Object extractPayload(String token, String payloadKey){
+    public Object extractPayload(String token, String payloadKey){
         Claims claims=extractAllPayloads(token);
         return (Object) claims.get(payloadKey);
     }
 
-    private boolean validateToken(String token, String email){
+    public boolean validateToken(String token, String email){
           final String userEmailFetchedFromToken= extractEmail(token);
           return (userEmailFetchedFromToken.equals(email)) && !isTokenExpired(token);
     }

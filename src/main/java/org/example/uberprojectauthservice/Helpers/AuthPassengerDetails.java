@@ -15,7 +15,6 @@ public class AuthPassengerDetails extends Passenger implements UserDetails {
     public AuthPassengerDetails(Passenger passenger){
         this.username=passenger.getEmail();
         this.password=passenger.getPassword();
-
     }
 
     @Override
@@ -26,6 +25,11 @@ public class AuthPassengerDetails extends Passenger implements UserDetails {
     @Override
     public String getUsername() {
         return this.username;
+    }
+
+    @Override
+    public String getPassword(){
+        return this.password;
     }
 
     @Override
