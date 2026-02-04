@@ -24,7 +24,7 @@ public class JWTService implements CommandLineRunner {
     private String SECRET;
 
     //This method creates a brand-new JWT token for us based on a payload
-    private String createToken(Map<String,Object>payload, String email) {
+    private String createToken(Map<String,Object>payload, String username) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime()+expiry*1000L);
 
@@ -32,7 +32,7 @@ public class JWTService implements CommandLineRunner {
                 .claims(payload)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(expiryDate)
-                .subject(email)
+                .subject(username)
                 .signWith(getSignKey())
                 .compact();
     }
@@ -73,6 +73,12 @@ public class JWTService implements CommandLineRunner {
         return number;
     }
 
+    private String extractEmailFromClaim(String token){
+        Claims claims=extractAllPayloads(token);
+        String email=(String) claims.get("email");
+        return email;
+    }
+
     private Object extractPayload(String token, String payloadKey){
         Claims claims=extractAllPayloads(token);
         return (Object) claims.get(payloadKey);
@@ -91,8 +97,10 @@ public class JWTService implements CommandLineRunner {
         String result=createToken(mp,"Nandini@123");
         System.out.println("Generated token is: "+result);
         System.out.println("Phone number is: " + extractPhoneNumber(result));
+        System.out.println(extractEmailFromClaim(result));
+
         System.out.println("Email is: " + extractPayload(result,"email").toString());
-        System.out.println("email fetched from token: "+extractEmail(result));
-        System.out.println("Token validation: "+validateToken(result,"a@b.com"));
+        System.out.println("username fetched from token: "+extractEmail(result));
+        System.out.println("Token validation: "+validateToken(result,"Nandini@123"));
     }
 }
