@@ -1,4 +1,4 @@
-package org.example.uberprojectauthservice.Security;
+package org.example.uberprojectauthservice.Helpers;
 
 import org.example.uberprojectauthservice.Models.Passenger;
 import org.springframework.security.core.GrantedAuthority;
