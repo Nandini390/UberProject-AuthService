@@ -88,9 +88,11 @@ public class JWTService implements CommandLineRunner {
         Map<String,Object> mp=new Hashtable<>();
         mp.put("email","a@b.com");
         mp.put("phoneNumber","999999999");
-        String result=createToken(mp,"Nandini");
+        String result=createToken(mp,"Nandini@123");
         System.out.println("Generated token is: "+result);
         System.out.println("Phone number is: " + extractPhoneNumber(result));
         System.out.println("Email is: " + extractPayload(result,"email").toString());
+        System.out.println("email fetched from token: "+extractEmail(result));
+        System.out.println("Token validation: "+validateToken(result,"a@b.com"));
     }
 }
