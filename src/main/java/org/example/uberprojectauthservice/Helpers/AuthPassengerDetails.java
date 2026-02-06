@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+//this is a wrapper class
 public class AuthPassengerDetails extends Passenger implements UserDetails {
 
     private String username;
