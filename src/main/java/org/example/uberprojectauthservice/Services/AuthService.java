@@ -7,6 +7,8 @@ import org.example.uberprojectauthservice.Repositories.PassengerRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthService {
     private final PassengerRepository passengerRepository;
@@ -18,13 +20,18 @@ public class AuthService {
     }
 
     public PassengerResponseDto SignupPassenger(PassengerSignupRequestDto passengerSignupRequestDto){
-        Passenger passenger= Passenger.builder()
+        Optional<Passenger> passenger = passengerRepository.findPassengerByEmail(passengerSignupRequestDto.getEmail());
+        if(passenger!=null){
+            System.out.println("Passenger already exist");
+            return null;
+        }
+        Passenger addPassenger= Passenger.builder()
                 .name(passengerSignupRequestDto.getName())
                 .email(passengerSignupRequestDto.getEmail())
                 .phoneNumber(passengerSignupRequestDto.getPhoneNumber())
                 .password(bCryptPasswordEncoder.encode(passengerSignupRequestDto.getPassword()))
                 .build();
-        Passenger newPassenger = passengerRepository.save(passenger);
+        Passenger newPassenger = passengerRepository.save(addPassenger);
         return PassengerResponseDto.from(newPassenger);
     }
 }

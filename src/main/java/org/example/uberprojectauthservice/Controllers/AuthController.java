@@ -28,9 +28,7 @@ public class AuthController {
     @Value("${cookie.expiry}")
     private int cookieExpiry;
     private final AuthService authService;
-
     private final AuthenticationManager authenticationManager;
-
     private final JWTService jwtService;
 
     public AuthController(AuthService authService, AuthenticationManager authenticationManager, JWTService jwtService) {
