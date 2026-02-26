@@ -20,6 +20,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -37,15 +40,14 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
-    @PostMapping("/signup/passenger")
+    @PostMapping("/signUp/passenger")
     public ResponseEntity<PassengerResponseDto> signUp(@RequestBody PassengerSignupRequestDto passengerSignupRequestDto) {
         PassengerResponseDto response = authService.SignupPassenger(passengerSignupRequestDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PostMapping("/signin/passenger")
+    @PostMapping("/signIn/passenger")
     public ResponseEntity<?> signIn(@RequestBody AuthRequestDto authRequestDto, HttpServletResponse response) {
-        System.out.println("Request received " + authRequestDto.getEmail() + " " + authRequestDto.getPassword());
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDto.getEmail(), authRequestDto.getPassword()));
         if(authentication.isAuthenticated()) {
             String jwtToken = jwtService.createToken(authRequestDto.getEmail());
@@ -54,7 +56,7 @@ public class AuthController {
                     .httpOnly(true)
                     .secure(false)
                     .path("/")
-                    .maxAge(7*24*3600)
+                    .maxAge(cookieExpiry)
                     .build();
 
             response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
@@ -66,7 +68,6 @@ public class AuthController {
 
     @GetMapping("/validate")
     public ResponseEntity<?> validate(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("Inside validate controller");
         for(Cookie cookie: request.getCookies()) {
             System.out.println(cookie.getName() + " " + cookie.getValue());
         }

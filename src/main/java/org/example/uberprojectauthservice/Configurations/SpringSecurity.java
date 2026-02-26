@@ -27,10 +27,6 @@ public class SpringSecurity implements WebMvcConfigurer {
 
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImp();
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,12 +34,18 @@ public class SpringSecurity implements WebMvcConfigurer {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/api/v1/auth/signup/*").permitAll()
-                                .requestMatchers("/api/v1/auth/signin/*").permitAll()
+                                .requestMatchers("/api/v1/auth/signUp/*").permitAll()
+                                .requestMatchers("/api/v1/auth/signIn/*").permitAll()
                                 .requestMatchers("/api/v1/auth/validate").authenticated()
                 )
+                .authenticationProvider(authenticationProvider(userDetailsService(),bCryptPasswordEncoder()))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsServiceImp();
     }
 
     @Bean
@@ -52,7 +54,6 @@ public class SpringSecurity implements WebMvcConfigurer {
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {

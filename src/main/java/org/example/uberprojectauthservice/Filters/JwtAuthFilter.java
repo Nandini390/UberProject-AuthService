@@ -52,21 +52,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        System.out.println("Incoming token" + token);
 
-        String email = jwtService.extractEmail(token);
-
-        System.out.println("Incoming Email" + email);
+        String email = jwtService.extractUsername(token);
 
         if(email != null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-            if(jwtService.validateToken(token, userDetails.getUsername())) {
+            if (jwtService.validateToken(token, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, null);
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
-        }
-        System.out.println("Forwarding req");
+         }
         filterChain.doFilter(request, response);
     }
 

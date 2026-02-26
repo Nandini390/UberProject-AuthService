@@ -20,11 +20,6 @@ public class AuthService {
     }
 
     public PassengerResponseDto SignupPassenger(PassengerSignupRequestDto passengerSignupRequestDto){
-        Optional<Passenger> passenger = passengerRepository.findPassengerByEmail(passengerSignupRequestDto.getEmail());
-        if(passenger!=null){
-            System.out.println("Passenger already exist");
-            return null;
-        }
         Passenger addPassenger= Passenger.builder()
                 .name(passengerSignupRequestDto.getName())
                 .email(passengerSignupRequestDto.getEmail())

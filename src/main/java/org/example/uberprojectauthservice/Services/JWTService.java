@@ -64,7 +64,7 @@ public class JWTService implements CommandLineRunner {
        return extractClaim(token, Claims::getExpiration);
     }
 
-    public String extractEmail(String token){
+    public String extractUsername(String token){
         return extractClaim(token,Claims::getSubject);
     }
 
@@ -90,7 +90,7 @@ public class JWTService implements CommandLineRunner {
     }
 
     public boolean validateToken(String token, String email){
-          final String userEmailFetchedFromToken= extractEmail(token);
+          final String userEmailFetchedFromToken= extractUsername(token);
           return (userEmailFetchedFromToken.equals(email)) && !isTokenExpired(token);
     }
 
@@ -102,10 +102,10 @@ public class JWTService implements CommandLineRunner {
         String result=createToken(mp,"Nandini@123");
         System.out.println("Generated token is: "+result);
         System.out.println("Phone number is: " + extractPhoneNumber(result));
-        System.out.println(extractEmailFromClaim(result));
+        System.out.println("email from token is: " + extractEmailFromClaim(result));
 
         System.out.println("Email is: " + extractPayload(result,"email").toString());
-        System.out.println("username fetched from token: "+extractEmail(result));
+        System.out.println("username fetched from token: "+extractUsername(result));
         System.out.println("Token validation: "+validateToken(result,"Nandini@123"));
     }
 }
