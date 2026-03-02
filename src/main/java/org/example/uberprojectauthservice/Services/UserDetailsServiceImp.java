@@ -1,8 +1,8 @@
 package org.example.uberprojectauthservice.Services;
 
 import org.example.uberprojectauthservice.Helpers.AuthPassengerDetails;
-import org.example.uberprojectauthservice.Models.Passenger;
 import org.example.uberprojectauthservice.Repositories.PassengerRepository;
+import org.example.uberprojectentityservice.Models.Passenger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

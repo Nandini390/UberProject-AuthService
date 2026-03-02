@@ -2,12 +2,10 @@ package org.example.uberprojectauthservice.Services;
 
 import org.example.uberprojectauthservice.Dto.PassengerResponseDto;
 import org.example.uberprojectauthservice.Dto.PassengerSignupRequestDto;
-import org.example.uberprojectauthservice.Models.Passenger;
 import org.example.uberprojectauthservice.Repositories.PassengerRepository;
+import org.example.uberprojectentityservice.Models.Passenger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class AuthService {
