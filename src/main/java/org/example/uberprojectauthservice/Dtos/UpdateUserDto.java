@@ -1,15 +1,14 @@
-package org.example.uberprojectauthservice.Dto;
+package org.example.uberprojectauthservice.Dtos;
 
 import lombok.*;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PassengerSignupRequestDto {
+@Builder
+public class UpdateUserDto {
     private String name;
     private String email;
     private String password;
-    private String phoneNumber;
 }
