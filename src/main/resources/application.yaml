@@ -16,21 +16,23 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         enable_lazy_load_no_trans: true
+        id:
+          new_generator_mappings: true
 
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: ${GOOGLE_CLIENT_ID:224472306715-k87hr5po00ggdvqpu8h9jp5n8q7qogn3.apps.googleusercontent.com}
-            client-secret: ${GOOGLE_CLIENT_SECRET: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}
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
             scope:
               - email
               - profile
               - openid
             #redirect url: /login/oauth2/code/google
     jwt:
-      secret: ${JWT_SECRET:jhgfdcvbjmmnbvcxdfghjklkjhgfdiuytredsdfghkjhgfghkjhgfdsdfghjiop098765434567ujbvcxzcghjuiuytredcvgy7ujnhyt54edxde345tyuhbhu76j}
+      secret: ${JWT_SECRET}
       issuer: ${JWT_ISSUER:substring.com}
       access-ttl-seconds: ${JWT_ACCESS_TTL_SECONDS:600}
       refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:86400}
@@ -61,3 +63,8 @@ app:
     frontend:
       success-redirect: http://localhost:5177/oauth/success
       failure-redirect: http://localhost:5177/oauth/failure
+
+  admin:
+    email: admin@uber.com
+    password: admin@123
+    name: Super Admin
