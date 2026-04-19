@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -103,8 +104,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUser(String userId) {
        UUID uId = UserHelper.parseUUID(userId);
-       User user=userRepository.findById(uId).orElseThrow(()->new ResourceNotFoundException("user not found with given id"));
-       userRepository.delete(user);
+        Optional<Driver> driver = driverRepository.findByUserId(uId);
+        driver.ifPresent(driverRepository::delete);
+        Optional<Passenger> passenger = passengerRepository.findByUserId(uId);
+        passenger.ifPresent(passengerRepository::delete);
+
+        // Delete the user itself
+        userRepository.deleteById(uId);
        return true;
     }
 

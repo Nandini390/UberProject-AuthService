@@ -42,7 +42,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserByEmail(email),HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(ADMIN)")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{userId}")
     public boolean deleteUser(@PathVariable String userId){
 
@@ -51,6 +51,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> updateUser(@PathVariable String userId, @RequestBody UpdateUserDto userDto){
       UserDto response=userService.updateUser(userDto,userId);
       return new ResponseEntity<>(response,HttpStatus.OK);
