@@ -1,13 +1,11 @@
 package org.example.uberprojectauthservice.Repositories;
 
-
 import org.example.uberprojectentityservice.Models.Passenger;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
-@Repository
-public interface PassengerRepository extends JpaRepository<Passenger, Long> {
-    Optional<Passenger> findPassengerByEmail(String email);
+public interface PassengerRepository extends JpaRepository<Passenger, UUID> {
+    Optional<Passenger> findByUserId(UUID userId);
 }

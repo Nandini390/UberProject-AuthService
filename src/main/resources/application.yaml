@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: UberProject-AuthService
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/Uber_Db_Local
+    username: root
+    password: Temp.567
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        enable_lazy_load_no_trans: true
+        id:
+          new_generator_mappings: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+              - openid
+            #redirect url: /login/oauth2/code/google
+    jwt:
+      secret: ${JWT_SECRET}
+      issuer: ${JWT_ISSUER:substring.com}
+      access-ttl-seconds: ${JWT_ACCESS_TTL_SECONDS:600}
+      refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:86400}
+      refresh-token-cookie-name: ${JWT_REFRESH_COOKIE_NAME:refreshToken}
+      cookie-secure: ${JWT_COOKIE_SECURE:TRUE}
+      cookie-http-only: ${JWT_COOKIE_HTTP_ONLY:true}
+      cookie-same-site: ${JWT_COOKIE_SAME-SITE:lax}
+      cookie-domain: ${JWT_COOKIE_DOMAIN:localhost}
+
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+cookie:
+  expiry: 3600
+
+logging:
+  level:
+    org.springframework.web: debug
+server:
+  port: 8080
+
+
+app:
+  cors:
+    front-end-url: "http://localhost:5177"
+  auth:
+    frontend:
+      success-redirect: http://localhost:5177/oauth/success
+      failure-redirect: http://localhost:5177/oauth/failure
+
+  admin:
+    email: admin@uber.com
+    password: admin@123
+    name: Super Admin
