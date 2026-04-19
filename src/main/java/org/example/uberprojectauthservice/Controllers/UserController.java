@@ -56,9 +56,9 @@ public class UserController {
       return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @PostMapping("/{userId}/complete-profile")
+    @PostMapping("/complete-profile")
     public ResponseEntity<SignupResponseDto> completeProfile(
-            @PathVariable String userId,
+            @RequestParam String userId,
             @RequestBody SignupRequestDto dto) {
         SignupResponseDto response = userService.completeProfile(userId, dto);
         return ResponseEntity.ok(response);

@@ -52,10 +52,6 @@ public class UserServiceImpl implements UserService {
         }
         User user=modelMapper.map(userDto, User.class);
         user.setProvider(Provider.LOCAL);
-        user.setEmail(userDto.getEmail());
-        user.setRole(userDto.getRole());
-        user.setName(userDto.getName());
-        user.setPassword(userDto.getPassword());
         User savedUser=userRepository.save(user);
         if (user.getRole() == Role.DRIVER) {
             Driver driver = Driver.builder()

@@ -71,11 +71,10 @@ public class SecurityConfig {
                     if (error != null) {
                         message = error;
                     }
-//                    Map<String, Object> errorMap = Map.of("message", message, "statusCode",404);
                     var apiError = ApiError.of(HttpStatus.UNAUTHORIZED.value(), "Unauthorized Access", message, request.getRequestURI(), true);
                     var objectMapper = new ObjectMapper();
                     response.getWriter().write(objectMapper.writeValueAsString(apiError));
-                        })
+                    })
 
                     .accessDeniedHandler((request, response, e) -> {
                         response.setStatus(403);
@@ -110,10 +109,9 @@ public class SecurityConfig {
         String[] urls=corsUrls.trim().split(",");
         var config= new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList(urls));
-        config.setAllowedMethods(List.of("GET","POST","PATCH","DELETE","PUT", "OPTIONS", "HEAD"));
+        config.setAllowedMethods(List.of("GET","POST","PATCH","DELETE","PUT","OPTIONS","HEAD"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
-
         var source=new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",config);
         return source;

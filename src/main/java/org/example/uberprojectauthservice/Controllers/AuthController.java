@@ -89,7 +89,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<Boolean> logout(HttpServletRequest request, HttpServletResponse response) {
         readRefreshTokenFromRequest(null, request).ifPresent(token -> {
             try {
                 if (jwtService.isRefreshToken(token)) {
@@ -107,7 +107,7 @@ public class AuthController {
         cookieService.clearRefreshCookie(response);
         cookieService.addNoStoreHeaders(response);
         SecurityContextHolder.clearContext();
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(true);
     }
 
     //api to renew access and refresh token

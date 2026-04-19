@@ -30,8 +30,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public DriverDto getDriverById(String driverId) {
-        Driver driver = driverRepository.findById(UUID.fromString(driverId))
-                .orElseThrow(() -> new ResourceNotFoundException("Driver not found"));
+        Driver driver = driverRepository.findById(UUID.fromString(driverId)).orElseThrow(() -> new ResourceNotFoundException("Driver not found"));
         return mapToDriverDto(driver);
     }
     @Override

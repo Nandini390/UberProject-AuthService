@@ -31,13 +31,13 @@ public class AdminController {
     }
 
     // Approve a driver
-    @PatchMapping("/drivers/{driverId}/approve")
+    @PatchMapping("/drivers/approve/{driverId}")
     public ResponseEntity<DriverDto> approveDriver(@PathVariable String driverId) {
         return ResponseEntity.ok(adminService.updateDriverStatus(driverId, DriverApprovalStatus.APPROVED));
     }
 
     // Deny a driver
-    @PatchMapping("/drivers/{driverId}/deny")
+    @PatchMapping("/drivers/deny/{driverId}")
     public ResponseEntity<DriverDto> denyDriver(
             @PathVariable String driverId,
             @RequestBody DenyRequestDto denyRequest) {  // admin can provide reason
