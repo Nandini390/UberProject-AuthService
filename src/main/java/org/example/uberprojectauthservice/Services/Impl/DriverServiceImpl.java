@@ -8,6 +8,7 @@ import org.example.uberprojectauthservice.Services.DriverService;
 import org.example.uberprojectauthservice.exception.ResourceNotFoundException;
 import org.example.uberprojectauthservice.helpers.UserHelper;
 import org.example.uberprojectentityservice.Models.Driver;
+import org.example.uberprojectentityservice.Models.DriverApprovalStatus;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,37 @@ public class DriverServiceImpl implements DriverService {
     public List<DriverDto> getAllDriver(){
         List<Driver> drivers = driverRepository.findAll();
         return drivers.stream().map(d-> modelMapper.map(d, DriverDto.class)).toList();
+    }
+
+    @Override
+    public DriverDto updateAvailability(String driverId, boolean available) {
+        UUID uId = UserHelper.parseUUID(driverId);
+        Driver driver = driverRepository.findById(uId)
+                .orElseThrow(() -> new ResourceNotFoundException("Driver not found"));
+        driver.setIsAvailable(available);
+        return modelMapper.map(driverRepository.save(driver), DriverDto.class);
+    }
+
+    @Override
+    public List<DriverDto> getEligibleDrivers(String activeCity) {
+        List<Driver> drivers;
+        if (activeCity == null || activeCity.isBlank()) {
+            drivers = driverRepository.findByDriverApprovalStatusAndIsAvailable(DriverApprovalStatus.APPROVED, true);
+        } else {
+            drivers = driverRepository.findByDriverApprovalStatusAndIsAvailableAndActiveCityIgnoreCase(
+                    DriverApprovalStatus.APPROVED,
+                    true,
+                    activeCity
+            );
+        }
+        return drivers.stream().map(driver -> modelMapper.map(driver, DriverDto.class)).toList();
+    }
+
+    @Override
+    public List<DriverDto> getDriversByApprovalStatus(DriverApprovalStatus status) {
+        return driverRepository.findByDriverApprovalStatus(status)
+                .stream()
+                .map(driver -> modelMapper.map(driver, DriverDto.class))
+                .toList();
     }
 }

@@ -19,4 +19,5 @@ public class DriverDto {
     private String denialReason;    // shown if DENIED
     private Double rating;
     private String activeCity;
+    private Boolean isAvailable;
 }

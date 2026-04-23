@@ -10,5 +10,7 @@ import java.util.UUID;
 
 public interface DriverRepository extends JpaRepository<Driver, UUID> {
     List<Driver> findByDriverApprovalStatus(DriverApprovalStatus status);
+    List<Driver> findByDriverApprovalStatusAndIsAvailable(DriverApprovalStatus status, Boolean isAvailable);
+    List<Driver> findByDriverApprovalStatusAndIsAvailableAndActiveCityIgnoreCase(DriverApprovalStatus status, Boolean isAvailable, String activeCity);
     Optional<Driver> findByUserId(UUID UserId);
 }

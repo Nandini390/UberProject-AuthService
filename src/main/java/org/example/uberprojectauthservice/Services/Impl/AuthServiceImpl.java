@@ -17,8 +17,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public SignupResponseDto registerUser(SignupRequestDto userDto) throws IllegalAccessException {
-        //verify email
-        //verify password
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         return userService.createUser(userDto);
     }
