@@ -68,3 +68,6 @@ app:
     email: admin@uber.com
     password: admin@123
     name: Super Admin
+
+webhook:
+  url: http://localhost:6700/webhook
